@@ -19,47 +19,46 @@
             height: 100%;
             touch-action: none;
         }
+
+        .control-panel {
+            position: absolute;
+            height: 100%;
+            width: 100px;
+            background-color: purple;
+            text-align: center;
+            padding: 20px;
+        }
     </style>
 
     <script src="https://cdn.babylonjs.com/babylon.js"></script>
     <script src="https://preview.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
     <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
-</head>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
+    <script src="js/playingCard.js"></script>
+</head>
 <body>
+
+<div class="control-panel">
+    <button id="playing-card">Hrací karta</button>
+</div>
 
 <canvas id="renderCanvas" touch-action="none"></canvas>
 <script>
     var canvas = document.getElementById("renderCanvas");
     var engine = new BABYLON.Engine(canvas, true);
-    var createScene = function () {
-        var scene = new BABYLON.Scene(engine);
 
-        var camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 10, new BABYLON.Vector3(0, 0, 0), scene);
-        camera.setPosition(new BABYLON.Vector3(0, 0, 250));
-        camera.attachControl(canvas, true);
-
-        var light = new BABYLON.PointLight("pointLight", new BABYLON.Vector3(0, 0, 10), scene);
-
-        light.parent = camera;
-
-        var material = new BABYLON.StandardMaterial(scene);
-        material.alpha = 1;
-        material.diffuseColor = new BABYLON.Color3(1.0, 1.0, 1.0);
-
-        var box = BABYLON.MeshBuilder.CreateBox("box", {
-            height: 88,
-            width: 63,
-            depth: 0.5
-        }, scene);
-        box.material = material;
-
-        return scene;
-    };
-    var scene = createScene();
-    engine.runRenderLoop(function () {
-        scene.render();
+    $('#playing-card').on('click', function () {
+        var scene = playingCardScene();
+        runEngine(scene);
     });
+
+    function runEngine(scene) {
+        engine.runRenderLoop(function () {
+            scene.render();
+        });
+    }
+
     window.addEventListener("resize", function () {
         engine.resize();
     });
